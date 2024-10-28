@@ -1,0 +1,23 @@
+function colorMatchingRows() {
+  // Open the active spreadsheet
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // Define the two sheets
+  const sheetA = ss.getSheetByName('Sheet1');
+  const sheetB = ss.getSheetByName('Latest data');
+  
+  // Clear all background colors in the relevant range of Sheet A first
+  sheetA.getRange("A3:A" + sheetA.getLastRow()).setBackground(null);
+  
+  // Get data from column A of both sheets, starting from A3 in Sheet A and A2 in Sheet B
+  const dataA = sheetA.getRange("A3:A" + sheetA.getLastRow()).getValues().flat();
+  const dataB = sheetB.getRange("A2:A" + sheetB.getLastRow()).getValues().flat();
+  
+  // Loop through dataA and match with dataB
+  dataA.forEach((value, index) => {
+    if (value && dataB.includes(value)) {
+      // Color the entire row in green if there's a match
+      sheetA.getRange(index + 3, 1, 1, sheetA.getLastColumn()).setBackground("green");
+    }
+  });
+}
